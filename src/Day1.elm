@@ -1,45 +1,38 @@
 module Day1 exposing (main)
 
-import Html exposing (Html)
+import MainHelper
 
 
-main : Html msg
+main : MainHelper.Main
 main =
-    Html.main_ []
-        [ Html.h1 [] [ Html.text "Day 1" ]
-        , Html.p
-            []
-            [ Html.text "Solution for part 1: "
-            , Html.ul []
-                [ Html.li []
-                    [ Html.text "on example data: "
-                    , Html.text (String.fromInt (solve myInput))
-                    ]
-                , Html.li []
-                    [ Html.text "on my input: "
-                    , Html.text (String.fromInt (solve myInput))
-                    ]
-                ]
-            ]
-        , Html.p
-            []
-            [ Html.text "Solution for part 2: "
-            , Html.ul []
-                [ Html.li []
-                    [ Html.text "on example data: "
-                    , Html.text (String.fromInt (solve myInput))
-                    ]
-                , Html.li []
-                    [ Html.text "on my input: "
-                    , Html.text (String.fromInt (solve myInput))
-                    ]
-                ]
-            ]
-        ]
+    MainHelper.program
+        { day = 1
+        , part1 =
+            { exampleSolution = 7
+            , solve = solvePart1
+            }
+        , part2 =
+            Just
+                { exampleSolution = 5
+                , solve = solvePart2
+                }
+        , myInput = myInput
+        , exampleInput = """
+199
+200
+208
+210
+200
+207
+240
+269
+260
+263"""
+        }
 
 
-solve : String -> number
-solve input =
+solvePart1 : String -> number
+solvePart1 input =
     let
         measurements : List Int
         measurements =
@@ -66,6 +59,40 @@ solve input =
                 ( first, 0 )
                 rest
                 |> Tuple.second
+
+
+solvePart2 : String -> number
+solvePart2 input =
+    let
+        measurements : List Int
+        measurements =
+            input
+                |> String.trim
+                |> String.split "\n"
+                |> List.filterMap String.toInt
+    in
+    case measurements of
+        first :: second :: third :: rest ->
+            List.foldl
+                (\current ( prev, acc ) ->
+                    let
+                        newWindow =
+                            List.drop 1 prev ++ [ current ]
+                    in
+                    ( newWindow
+                    , if List.sum newWindow > List.sum prev then
+                        acc + 1
+
+                      else
+                        acc
+                    )
+                )
+                ( [ first, second, third ], 0 )
+                rest
+                |> Tuple.second
+
+        _ ->
+            -1
 
 
 myInput : String
