@@ -1,0 +1,4 @@
+node_modules
+*.html
+elm-stuff
+.idea
