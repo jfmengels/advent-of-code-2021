@@ -31,7 +31,7 @@ main =
         }
 
 
-solvePart1 : String -> number
+solvePart1 : String -> Int
 solvePart1 input =
     let
         measurements : List Int
@@ -61,7 +61,7 @@ solvePart1 input =
                 |> Tuple.second
 
 
-solvePart2 : String -> number
+solvePart2 : String -> Int
 solvePart2 input =
     let
         measurements : List Int
